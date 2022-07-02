@@ -86,6 +86,13 @@ def filterPixelFrequency(imc,cutPercentage,classID):
         filteredImages = filteredImages.add(image)
     return ee.ImageCollection(filteredImages)
 
+def getImageCollectionMB6():
+    images = ee.List([]);
+    for i in range(1985,2021):
+        img = ee.Image('projects/mapbiomas-workspace/TRANSVERSAIS/MINERACAO6-FT/'+str(i)+'-5')
+        images = images.add(img)
+    return ee.ImageCollection(images)
+
 
 def getImageCollection():
     images = ee.List([]);
@@ -103,6 +110,7 @@ def PixelFrequency (imc,cutPercentage,classID):
     return imcFreq
     
 imc = getImageCollection()
+imcMB6 = getImageCollectionMB6()
 copyIMC = imc
 
 def getConsecutively(img):
@@ -126,8 +134,10 @@ mining = ee.ImageCollection(filterPixelFrequency(imc,11,30))
 imcFreq = PixelFrequency(mining,0,30)
 
 Map.addLayer(geomLixolist,{'color':'pink'},'Geom',False)
-
+Map.addLayer(ee.Image(PixelFrequency(imcMB6,0,30)).selfMask(),{'min':0,'max':100,'palette':['fff9f9','ff0000','efff00','27ff00','ef00ff']},'Freq MB6 -'+str(30),False)
 Map.addLayer(imcFreq.selfMask(),{'min':0,'max':100,'palette':['fff9f9','ff0000','efff00','27ff00','ef00ff']},'Freq -'+str(30))
+
+
 
 checkLayer = True
 for lyr in QgsProject.instance().mapLayers().values():
