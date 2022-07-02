@@ -137,7 +137,7 @@ Map.addLayer(mosaic,{'bands': ["swir1","nir","red"], 'max': 126,'min': 10,'opaci
 mosaic = ee.Image('projects/mapbiomas-workspace/TRANSVERSAIS/ZONACOSTEIRA6/mosaic_2005')
 Map.addLayer(mosaic,{'bands': ["swir1","nir","red"], 'max': 126,'min': 10,'opacity': 1},'Mosaico - 2005',False)
 Map.addLayer(ee.Image(PixelFrequency(imc,0,30)).selfMask(),{'min':0,'max':100,'palette':['fff9f9','ff0000','efff00','27ff00','ef00ff']},'Freq Antes-'+str(30),False)
-
+Map.addLayer(ee.FeatureCollection('projects/solvedltda/assets/MB7_mining/MB7_grid').filterMetadata('mining','equals',1),{'fill': 0.4,'color':'red'},'GRID Mineração',False)
 mining = ee.ImageCollection(filterPixelFrequency(imc,11,30))
 imcFreq = PixelFrequency(mining,0,30)
 
