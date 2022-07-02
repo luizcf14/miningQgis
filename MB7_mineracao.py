@@ -13,10 +13,8 @@ from qgis.gui import *
 from qgis.utils import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QToolButton, QIcon #this is for your dialogs
-from qgis.core import (
-    QgsVectorLayer
-)
+#from PyQt5.QtGui import QToolButton, QIcon #this is for your dialogs
+from qgis.core import (QgsVectorLayer)
 
 
 
