@@ -1,7 +1,9 @@
-import ee
 import collections
+collections.Callable = collections.abc.Callable
+import ee
 import json
 import os # This is is needed in the pyqgis console also
+import requests
 from qgis.core import QgsJsonUtils
 from qgis.core import QgsJsonExporter
 from PyQt5.QtCore import *
@@ -10,12 +12,14 @@ from qgis.core import *
 from qgis.gui import *
 from qgis.utils import *
 
-from PyQt5.QtGui import QInputDialog #this is for your dialogs
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QToolButton, QIcon #this is for your dialogs
 from qgis.core import (
     QgsVectorLayer
 )
 
-collections.Callable = collections.abc.Callable
+
+
 from ee_plugin import Map
 try:
     ee.Initialize()
@@ -24,12 +28,33 @@ except:
     ee.Initialize()
 
 
+def UpdateLayer():
+    teste = QgsJsonExporter(vlayer)
+    data  = str(teste.exportFeatures(vlayer.getFeatures())).replace("id","gid").replace("'",'"')
+    data = json.loads(data)
+    postgisGeometries = ee.FeatureCollection(data)
+
+
+
+url = "https://github.com/luizcf14/miningQgis/raw/main/icon.png"
+toolbar = iface.addToolBar("Solved Plugin")
+response = requests.get(url)
+pixmap = QPixmap()
+pixmap.loadFromData(response.content)
+someact = QAction(QIcon(pixmap),QCoreApplication.translate("test", "My Action"),iface.mainWindow())
+someact.triggered.connect(UpdateLayer)
+toolbar.addAction(someact)
+
+
+
+
 tempTuple = QInputDialog.getText(None, "senha" ,"Digite a Senha")
 password = tempTuple[0]
 uri = QgsDataSourceUri()
 uri.setConnection("azure.solved.eco.br", "5432", "mb7_mining", "luizcf14", password)
 uri.setDataSource("public", "remove_regions", "geom")
 vlayer = QgsVectorLayer(uri.uri(False), "PG - Remove Regions", "postgres")
+
 
 teste = QgsJsonExporter(vlayer)
 data  = str(teste.exportFeatures(vlayer.getFeatures())).replace("id","gid").replace("'",'"')
