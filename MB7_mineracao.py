@@ -57,7 +57,7 @@ vlayer = QgsVectorLayer(uri.uri(False), "PG - Remove Regions", "postgres")
 teste = QgsJsonExporter(vlayer)
 data  = str(teste.exportFeatures(vlayer.getFeatures())).replace("id","gid").replace("'",'"')
 data = json.loads(data)
-postgisGeometries = ee.FeatureCollection(data)
+#postgisGeometries = ee.FeatureCollection(data)
 
 def getGeometriasLixo(feat):
     print(str(feat['name']))
