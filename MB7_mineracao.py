@@ -142,9 +142,10 @@ month ="07"
 Map.addLayer(ee.Image('projects/planet-nicfi/assets/basemaps/americas/planet_medres_normalized_analytic_'+year+'-'+month+'_mosaic'), {"bands":["R", "G", "B"],"min": [200,200,50],"max":[1700,1400,1100],"gamma": 1.35, },'planet_2021-07',False)
 
 def TransparentFill(fc):
-    return ee.Geometry.LineString(fc.geometry().coordinates().get(0))
+    return ee.Feature(ee.Geometry.LineString(fc.geometry().coordinates().get(0)),{})
 print('Here')
-Map.addLayer(ee.FeatureCollection('projects/solvedltda/assets/MB7_mining/MB7_grid').filterMetadata('mining','equals',1),{'color':'white'},'GRID Mineração',False)
+grid = ee.FeatureCollection('projects/solvedltda/assets/MB7_mining/MB7_grid').filterMetadata('mining','equals',1).map(TransparentFill)
+Map.addLayer(grid,{'color':'white'},'GRID Mineração',False)
 print('Here1')
 mining = ee.ImageCollection(filterPixelFrequency(imc,11,30))
 print('Here2')
