@@ -143,11 +143,13 @@ Map.addLayer(ee.Image('projects/planet-nicfi/assets/basemaps/americas/planet_med
 
 def TransparentFill(fc):
     return ee.Geometry.LineString(fc.geometry().coordinates().get(0))
-
-Map.addLayer(ee.FeatureCollection('projects/solvedltda/assets/MB7_mining/MB7_grid').filterMetadata('mining','equals',1).map(TransparentFill),{'color':'red'},'GRID Mineração',False)
-
+print('Here')
+Map.addLayer(ee.FeatureCollection('projects/solvedltda/assets/MB7_mining/MB7_grid').filterMetadata('mining','equals',1),{'color':'white'},'GRID Mineração',False)
+print('Here1')
 mining = ee.ImageCollection(filterPixelFrequency(imc,11,30))
+print('Here2')
 imcFreq = PixelFrequency(mining,0,30)
+print('Here3')
 
 Map.addLayer(geomLixolist,{'color':'pink'},'Geom',False)
 #Map.addLayer(geomLixolist,{'color':'pink'},'Geom',False)
