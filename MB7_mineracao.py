@@ -27,10 +27,8 @@ except:
 
 
 def UpdateLayer():
-    teste = QgsJsonExporter(vlayer)
-    data  = str(teste.exportFeatures(vlayer.getFeatures())).replace("id","gid").replace("'",'"')
-    data = json.loads(data)
-    postgisGeometries = ee.FeatureCollection(data)
+    print('Here')
+    #postgisGeometries = ee.FeatureCollection(data)
 
 
 
@@ -68,7 +66,7 @@ geomLixolist =  ee.List([])
 for glixo in geomLixolista:
     geomLixolist = geomLixolist.add(ee.FeatureCollection(str(glixo['id'])))
 #print(geomLixolist.size().getInfo())
-geomLixolist = ee.FeatureCollection(geomLixolist).flatten().merge(postgisGeometries)
+geomLixolist = ee.FeatureCollection(geomLixolist).flatten()#.merge(postgisGeometries)
 #geomAddImage = ee.Image(0).toByte().paint(adicionar,1)
 geomLixoImage = ee.Image(0).toByte().paint(geomLixolist,1)
 
