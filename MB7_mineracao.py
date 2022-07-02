@@ -42,8 +42,6 @@ someact.triggered.connect(UpdateLayer)
 toolbar.addAction(someact)
 
 
-
-
 tempTuple = QInputDialog.getText(None, "senha" ,"Digite a Senha")
 password = tempTuple[0]
 uri = QgsDataSourceUri()
@@ -58,13 +56,13 @@ data = json.loads(data)
 
 uriPOI = QgsDataSourceUri()
 uriPOI.setConnection("azure.solved.eco.br", "5432", "mb7_mining", "luizcf14", password)
-uriPOI.setDataSource("public", "miningsolved", "geom","scale != 'Falso positivo'")
+uriPOI.setDataSource("public", "miningsolved", "geom","scale not like 'Falso positivo'")
 uriPOI_layer = QgsVectorLayer(uriPOI.uri(False), "PG - Interest Regions", "postgres")
-jsonExporter = QgsJsonExporter(uriPOI_layer)
-data_uriPOI_layer   = str(jsonExporter.exportFeatures(uriPOI_layer.getFeatures())).replace("id","gid").replace("'",'"')
-data_uriPOI_layer  = json.loads(data_uriPOI_layer)
-includeGeometries = ee.FeatureCollection(data_uriPOI_layer)
-ROI = ee.Image(0).toByte().paint(includeGeometries,1)
+#jsonExporter = QgsJsonExporter(uriPOI_layer)
+#data_uriPOI_layer   = str(jsonExporter.exportFeatures(uriPOI_layer.getFeatures())).replace("id","gid").replace("'",'"')
+#data_uriPOI_layer  = json.loads(data_uriPOI_layer)
+#includeGeometries = ee.FeatureCollection(data_uriPOI_layer)
+#ROI = ee.Image(0).toByte().paint(includeGeometries,1)
 
 
 def getGeometriasLixo(feat):
@@ -107,7 +105,7 @@ def getImageCollectionMB6():
 def getImageCollection():
     images = ee.List([]);
     for i in range(1985,2022):
-        img = ee.Image('projects/solvedltda/assets/MB7_mining/MB7_Mining/ft-'+str(i)+'-1').where(ROI.eq(0),0).where(geomLixoImage.eq(1),0)#.and(geomAddImage.eq(0)),0)
+        img = ee.Image('projects/solvedltda/assets/MB7_mining/MB7_Mining/ft-'+str(i)+'-1').where(geomLixoImage.eq(1),0)#.where(ROI.eq(0),0)#.and(geomAddImage.eq(0)),0)
         images = images.add(img)
         if(i == 2021):
             img = img.set({'nextYear':(i-1)})
@@ -144,7 +142,7 @@ mining = ee.ImageCollection(filterPixelFrequency(imc,11,30))
 imcFreq = PixelFrequency(mining,0,30)
 
 Map.addLayer(geomLixolist,{'color':'pink'},'Geom',False)
-Map.addLayer(geomLixolist,{'color':'pink'},'Geom',False)
+#Map.addLayer(geomLixolist,{'color':'pink'},'Geom',False)
 Map.addLayer(ee.Image(PixelFrequency(imcMB6,0,30)).selfMask(),{'min':0,'max':100,'palette':['fff9f9','ff0000','efff00','27ff00','ef00ff']},'Freq MB6 -'+str(30),False)
 Map.addLayer(imcFreq.selfMask(),{'min':0,'max':100,'palette':['fff9f9','ff0000','efff00','27ff00','ef00ff']},'Freq -'+str(30))
 
