@@ -101,6 +101,13 @@ def getImageCollectionMB6():
         images = images.add(img)
     return ee.ImageCollection(images)
 
+def getImageCollectionMB7():
+    images = ee.List([]);
+    for i in range(1985,2022):
+        img = ee.Image('projects/mapbiomas-workspace/TRANSVERSAIS/COLECAO7/mineracao/'+str(i)+'-2').eq(30)
+        images = images.add(img)
+    return ee.ImageCollection(images)
+
 
 def getImageCollection():
     images = ee.List([]);
@@ -136,6 +143,14 @@ mosaic = ee.Image('projects/mapbiomas-workspace/TRANSVERSAIS/ZONACOSTEIRA6/mosai
 Map.addLayer(mosaic,{'bands': ["swir1","nir","red"], 'max': 126,'min': 10,'opacity': 1},'Mosaico - 2010',False)
 mosaic = ee.Image('projects/mapbiomas-workspace/TRANSVERSAIS/ZONACOSTEIRA6/mosaic_2005')
 Map.addLayer(mosaic,{'bands': ["swir1","nir","red"], 'max': 126,'min': 10,'opacity': 1},'Mosaico - 2005',False)
+mosaic = ee.Image('projects/mapbiomas-workspace/TRANSVERSAIS/ZONACOSTEIRA6/mosaic_2000')
+Map.addLayer(mosaic,{'bands': ["swir1","nir","red"], 'max': 126,'min': 10,'opacity': 1},'Mosaico - 2000',False)
+mosaic = ee.Image('projects/mapbiomas-workspace/TRANSVERSAIS/ZONACOSTEIRA6/mosaic_1995')
+Map.addLayer(mosaic,{'bands': ["swir1","nir","red"], 'max': 126,'min': 10,'opacity': 1},'Mosaico - 1995',False)
+mosaic = ee.Image('projects/mapbiomas-workspace/TRANSVERSAIS/ZONACOSTEIRA6/mosaic_1990')
+Map.addLayer(mosaic,{'bands': ["swir1","nir","red"], 'max': 126,'min': 10,'opacity': 1},'Mosaico - 1990',False)
+mosaic = ee.Image('projects/mapbiomas-workspace/TRANSVERSAIS/ZONACOSTEIRA6/mosaic_1985')
+Map.addLayer(mosaic,{'bands': ["swir1","nir","red"], 'max': 126,'min': 10,'opacity': 1},'Mosaico - 1985',False)
 Map.addLayer(ee.Image(PixelFrequency(imc,0,30)).selfMask(),{'min':0,'max':100,'palette':['fff9f9','ff0000','efff00','27ff00','ef00ff']},'Freq Antes-'+str(30),False)
 year ="2021"
 month ="07"
